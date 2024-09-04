@@ -81,12 +81,12 @@ Section LabeledStepExecution.
 
   Lemma strong_fairness_invar :
     forall step e silent s, strong_fairness step silent (Cons e s) -> strong_fairness step silent s.
-  Proof using. 
+  Proof using.
     unfold strong_fairness. unfold inf_enabled, inf_occurred, inf_often.
-    intros step e silent s fair l neq alev. 
+    intros step e silent s fair l neq alev.
     assert (alevt_es: always (eventually (now (enabled step l))) (Cons e s)).
-    constructor. 
-    constructor 2. destruct alev; assumption. 
+    constructor.
+    constructor 2. destruct alev; assumption.
     simpl. assumption.
     clear alev. generalize (fair l neq alevt_es); clear fair alevt_es.
     intro fair; case (always_Cons fair); trivial.
@@ -167,7 +167,7 @@ Section LabeledStepExecution.
     forall step x s, lb_step_execution step (Cons x s) -> lb_step_execution step s.
   Proof using.
     intros step x s e. change (lb_step_execution step (tl (Cons x s))).
-    destruct e; simpl. assumption. 
+    destruct e; simpl. assumption.
   Qed.
 
   Lemma lb_step_execution_extensional :
@@ -191,7 +191,7 @@ Section LabeledStepExecution.
 
   Definition event_step_star (step : step_relation A trace) (init : A) (e : event) :=
     refl_trans_1n_trace step init (evt_a e) (evt_trace e).
- 
+
   Definition step_star_lb_step_reachable (lb_step : lb_step_relation) (step : step_relation A trace) (init : A) :=
     forall a l a' tr tr',
      refl_trans_1n_trace step init a tr' ->
@@ -214,7 +214,7 @@ Section LabeledStepExecution.
     constructor; first by [].
     apply cf.
     inversion H_exec'; subst_max.
-    simpl in *.    
+    simpl in *.
     rewrite /event_step_star /=.
     rewrite /event_step_star /= in H_star.
     rewrite /step_star_lb_step_reachable in H_r.
@@ -297,7 +297,7 @@ Section LabeledStepFailure.
                        (update name_eq_dec (nwState net) h d) ->
       lb_step_failure (failed, net) lb (failed, net') [(h, inl inp); (h, inr out)]
   | LabeledStepFailure_stutter : forall net failed, lb_step_failure (failed, net) label_silent (failed, net) [].
-  
+
   Context {failure_params : FailureParams unlabeled_multi_params}.
 
   Lemma step_failure_star_lb_step_reachable :
@@ -379,7 +379,7 @@ Section LabeledStepOrderFailure.
       apply (@refl_trans_1n_trace_trans _ _ _ _ (failed', net)) => //.
       rewrite -(app_nil_r (_ :: _)).
       apply: (@RT1nTStep _ _ _ _ (failed', net')); last exact: RT1nTBase.
-      apply: StepOrderedFailure_input => //; first by [].
+      apply: StepOrderedFailure_input => //.
       rewrite /input_handlers /= /unlabeled_input_handlers /=.
       repeat break_let.
       by tuple_inversion.
